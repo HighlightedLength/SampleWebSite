@@ -1,7 +1,6 @@
 import re
 from app_server.app.controllers.coffee_controller import CoffeeController
 from app_server.app.controllers.tea_controller import TeaController
-from pprint import pprint
 from routes import Mapper
 
 class Router:
@@ -25,9 +24,7 @@ class Router:
         else:
             controller = TeaController()
 
-        pprint(dir(controller))
-
         if environ["REQUEST_METHOD"] == 'GET':
-            return controller.view(environ, start_response)
+            return controller.get_view(environ, start_response)
         elif environ["REQUEST_METHOD"] == 'POST':
             return controller.post_edit(environ, start_response)

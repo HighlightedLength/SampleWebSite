@@ -1,0 +1,2 @@
+class model:
+    item = "coffee"

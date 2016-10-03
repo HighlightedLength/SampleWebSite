@@ -3,23 +3,32 @@ from web_server.controllers.coffee_controller import CoffeeController
 from web_server.controllers.tea_controller import TeaController
 from routes import Mapper
 
+
 class Router:
     def serve(self, environ, start_response):
+        map = Mapper(controller_scan = ["coffees", "teas"])
 
-        map = Mapper()
+        #map = Mapper()
 
-        map.connect(None, "/{controller}/{id}")
-        map.connect(None, "/{controller}/{acion}/{id}")
+        map.resource("coffee","coffees")
+        map.resource("tea","teas")
 
-        result  = map.match(environ["PATH_INFO"])
+        result = map.match(environ["PATH_INFO"])
+        print(result)
+        if(result):
+            print(result['controller'])
+
         if(result['controller'] == "coffee"):
             controller = CoffeeController()
         elif(result['controller'] == "tea"):
             controller = TeaController()
         else:
-            contoller = TeaController()
+            controller = TeaController()
 
-        if environ["REQUEST_METHOD"] == 'GET':
-            return controller.get(environ, start_response)
-        elif environ["REQUEST_METHOD"] == 'POST':
-            return controller.post(environ, start_response)
+        if(results.get(id)):
+            environ["sample_website.query_value"] = results['id']
+
+        environ["sample_website.controller"] = results['controller']
+
+        methodToCall = getattr(controller,result['action'])
+        return methodToCall(environ,start_response)

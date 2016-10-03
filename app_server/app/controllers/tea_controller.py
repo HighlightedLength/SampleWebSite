@@ -1,7 +1,26 @@
 from app_server.access.data_contexts.data_context_factory import DataContextFactory
+from web_server.views.view_factory import ViewFactory
+from web_server.models import model1
 
 class TeaController:
-    def get_view(self, environ, start_response):
+    def index(self, environ, start_response):
+        status = '200 OK'
+        headers = [('Content-type', 'text/html; charset=utf-8')]
+
+        start_response(status, headers)
+
+        factoryObject  = DataContextFactory()
+
+        comment = factoryObject.factory(1)
+
+        view = ViewFactory()
+        model1 = model()
+
+        #ret = view.build(r"web\views\form1.html", model1)
+        ret = [("You GET a free tea in index" + "\n" + comment).encode("utf-8")]
+        return [ret.encode("utf-8")]
+
+    def create(self, environ, start_response):
         status = '200 OK'
         headers = [('Content-type', 'text/plain; charset=utf-8')]
 
@@ -11,10 +30,10 @@ class TeaController:
 
         comment = factoryObject.factory(1)
 
-        ret = [("You GET a free tea in get_view" + "\n" + comment).encode("utf-8")]
+        ret = [("You GET a free tea in create" + "\n" + comment).encode("utf-8")]
         return ret
 
-    def get_edit(self, environ, start_response):
+    def new(self, environ, start_response):
         status = '200 OK'
         headers = [('Content-type', 'text/plain; charset=utf-8')]
 
@@ -24,35 +43,38 @@ class TeaController:
 
         comment = factoryObject.factory(1)
 
-        ret = [("You GET a free tea in get_edit" + "\n" + comment).encode("utf-8")]
+        ret = [("You GET a free tea in new" + "\n" + comment).encode("utf-8")]
         return ret
-
-    def view(self, environ, start_response):
-        status = '200 OK'
-        headers = [('Content-type', 'text/plain; charset=utf-8')]
-
-        start_response(status, headers)
-
-        factoryObject  = DataContextFactory()
-
-        comment = factoryObject.factory(1)
-
-        ret = [("You GET a free tea in view" + "\n" + comment).encode("utf-8")]
-        return ret
-    def post_edit(self, environ, start_response):
+    def update(self, environ, start_response):
         status = '999 NOT OK'
         headers = [('Content-type', 'text/plain; charset=utf-8')]
 
         start_response(status, headers)
 
-        ret = [("Sorry! We are out of tea in post_edit").encode("utf-8")]
+        ret = [("Sorry! We are out of tea in update").encode("utf-8")]
         return ret
 
-    def post_form(self, environ, start_response):
+    def delete(self, environ, start_response):
         status = '999 NOT OK'
         headers = [('Content-type', 'text/plain; charset=utf-8')]
 
         start_response(status, headers)
 
-        ret = [("Sorry! We are out of stuff").encode("utf-8")]
+        ret = [("Sorry! We are out of tea").encode("utf-8")]
+        return ret
+    def show(self, environ, start_response):
+        status = '999 NOT OK'
+        headers = [('Content-type', 'text/plain; charset=utf-8')]
+
+        start_response(status, headers)
+
+        ret = [("Sorry! We are out of tea").encode("utf-8")]
+        return ret
+    def edit(self, environ, start_response):
+        status = '999 NOT OK'
+        headers = [('Content-type', 'text/plain; charset=utf-8')]
+
+        start_response(status, headers)
+
+        ret = [("Sorry! We are out of tea").encode("utf-8")]
         return ret

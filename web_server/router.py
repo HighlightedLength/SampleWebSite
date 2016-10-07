@@ -15,20 +15,24 @@ class Router:
 
         result = map.match(environ["PATH_INFO"])
         print(result)
+
         if(result):
             print(result['controller'])
 
-        if(result['controller'] == "coffee"):
-            controller = CoffeeController()
-        elif(result['controller'] == "tea"):
-            controller = TeaController()
+        if(result):
+            if(result['controller'] == "coffees"):
+                controller = CoffeeController()
+            elif(result['controller'] == "teas"):
+                controller = TeaController()
         else:
-            controller = TeaController()
+            controller = CoffeeController()
 
-        if(results.get(id)):
-            environ["sample_website.query_value"] = results['id']
+        if(result.get('id')):
+            environ["sample_website.query_value"] = result['id']
+            print("query value", environ["sample_website.query_value"])
 
-        environ["sample_website.controller"] = results['controller']
+
+        environ["sample_website.controller"] = result['controller']
 
         methodToCall = getattr(controller,result['action'])
         return methodToCall(environ,start_response)

@@ -3,15 +3,20 @@ from web_server.controllers.coffee_controller import CoffeeController
 from web_server.controllers.tea_controller import TeaController
 from routes import Mapper
 
+def make_map():
+    """Create configure and return the routes mapper"""
+    #map = Mapper(directory="C:\Users\sushr\Documents\GitHub\SampleWebSite\web_server\controllers")
+    #map.minimization = False
+    map = Mapper(controller_scan = ["coffees", "teas"])
+    map.resource("coffee","coffees")
+    map.resource("tea","teas")
+
+    return map
 
 class Router:
     def serve(self, environ, start_response):
-        map = Mapper(controller_scan = ["coffees", "teas"])
 
-        #map = Mapper()
-
-        map.resource("coffee","coffees")
-        map.resource("tea","teas")
+        map = make_map()
 
         result = map.match(environ["PATH_INFO"])
         print(result)

@@ -4,21 +4,60 @@ from app_server.app.controllers.tea_controller import TeaController
 from routes import Mapper
 from urllib.parse import parse_qsl
 
+def matchString(environ):
+
+    controllerList = []
+    reString1 = r"/coffee"
+    reString2 = r"/tea"
+
+    p1 = re.compile(reString1, re.IGNORECASE)
+    p2 = re.compile(reString2, re.IGNORECASE)
+
+    m1 = p1.match(environ["QUERY_STRING"])
+    m2 = p2.match(environ["QUERY_STRING"])
+
+    #if m1:
+    controllerList.append(m1)
+    #else:
+    controllerList.append(m2)
+
+    return controllerList
+
 class Router:
     def serve(self, environ, start_response):
 
         query = parse_qsl(environ["QUERY_STRING"])  #Parse a query string given as a string argument. Data are returned as a list of name, value pairs.
         print(query)                                # this prints in command prompt
 
-        status = '200 OK'
-        headers = [('Content-type', 'text/plain; charset=utf-8')]
+        environData = matchString(environ)
 
-        start_response(status, headers)
+        if(environData[0]):
+            controller = CoffeeController()
+        elif(environData[1]):
+            controller = TeaController()
+        else:
+            controller = CoffeeController()
 
-        comment = "my comment in app server router"
+        if environ["REQUEST_METHOD"] == 'GET':
+            return controller.index(environ, start_response)
+        elif environ["REQUEST_METHOD"] == 'POST':
+            return controller.create(environ, start_response)
 
-        ret = [("You GET a free coffee in create" + "\n" + comment).encode("utf-8")]
-        return ret
+
+
+
+        # status = '200 OK'
+        # headers = [('Content-type', 'text/plain; charset=utf-8')]
+        #
+        # start_response(status, headers)
+        #
+        # comment = "my comment in app server router"
+        #
+        # ret = [("You GET a free coffee in create" + "\n" + comment).encode("utf-8")]
+        # return ret
+
+
+
         # if environ["REQUEST_METHOD"] == 'GET':
         #     return controller.get_view(environ, start_response)
         # elif environ["REQUEST_METHOD"] == 'POST':
@@ -64,8 +103,3 @@ class Router:
         #     controller = TeaController()
         # else:
         #     controller = TeaController()
-        #
-        # if environ["REQUEST_METHOD"] == 'GET':
-        #     return controller.get_view(environ, start_response)
-        # elif environ["REQUEST_METHOD"] == 'POST':
-        #     return controller.post_edit(environ, start_response)

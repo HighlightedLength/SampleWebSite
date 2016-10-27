@@ -37,22 +37,23 @@ class CoffeeController:
 
         factoryObject  = DataContextFactory()
 
-        comment = factoryObject.factory(2)
+        comment = factoryObject.factory(1)
 
         #view = ViewFactory()
         #model1 = model1()
 
         response = {}
-        response['method_name'] = "create"
+        response['method_name'] = "index"
         response['comment'] = comment
         response['model'] = "app_server index"
 
         jsonResponse = json.dumps(response)
+        print(jsonResponse)
         #ret = view.build(r"web\views\form1.html", model1)
-        ret = [("You GET a free coffee in index" + "\n" + comment).encode("utf-8")]
-        return [ret.encode("utf-8")]
-        #return jsonResponse.encode("utf-8")
-
+        #ret = [("You GET a free coffee in index" + "\n" + comment).encode("utf-8")]
+        #return ret
+        return [jsonResponse.encode("utf-8")]
+        
     def new(self, environ, start_response):
         status = '200 OK'
         headers = [('Content-type', 'json; charset=utf-8')]

@@ -9,7 +9,7 @@ class ViewFactory:
         if not(template_path in self.cache):
             with open(template_path) as newFile:
                 doc = newFile.read()
-            print(doc)
+            #print(doc)
             self.cache[template_path] = pyrazor.Parse(doc)
 
         template = self.cache.get(template_path)

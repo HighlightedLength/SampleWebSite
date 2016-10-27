@@ -3,10 +3,16 @@ from web_server.views.view_factory import ViewFactory
 from web_server.models.model1 import model
 from web_server.domain.factories.domain_factory import DomainFactory
 from web_server.domain.services.domain_service import DomainService
+from urllib.parse import parse_qsl
 
 def tempMethod(environ, start_response, myString):
     status = '200 OK'
-    headers = [('Content-type', 'text/html; charset=utf-8')]
+
+    s1 = ('Set-Cookie', 'theme=light')
+    s2 = ('Set-Cookie', 'sessionToken=session123')
+    headers = [('Content-type', 'text/html; charset=utf-8'), s1, s2]
+
+
 
     start_response(status, headers)
 
@@ -42,6 +48,30 @@ def tempMethod(environ, start_response, myString):
     #return ret
 
 class CoffeeController:
+    def get(self, environ, start_response):
+
+        ret = tempMethod(environ, start_response,"get1")
+        return ret
+
+    def post(self, environ, start_response):
+
+        try:
+            length = int(environ.get('CONTENT_LENGTH','0'))
+        except ValueError:
+            length = 0
+
+        if length != 0:
+            bodyBytes = environ['wsgi.input'].read(length)
+            print(bodyBytes)
+        else:
+            print("some error in body")
+
+        body = parse_qsl(bodyBytes.decode(), True)  # keep blank values = True
+        print("body decoded: ", body)
+
+        ret = tempMethod(environ, start_response,"post1")
+        return ret
+
     def index(self, environ, start_response):
 
         ret = tempMethod(environ, start_response,"index1")
